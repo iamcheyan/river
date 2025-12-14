@@ -1,0 +1,122 @@
+#!/bin/sh
+#
+# River 窗口管理器初始化脚本
+# 
+# River 是用于 Wayland 的动态平铺窗口管理器。
+# 此脚本在启动时自动执行，应用 River 的配置。
+
+# ============================================================================
+# 环境变量设置
+# ============================================================================
+# 区域设置（日语环境）
+export LANG=ja_JP.UTF-8
+export LC_ALL=ja_JP.UTF-8
+
+# Wayland 会话信息
+export XDG_CURRENT_DESKTOP=river
+export XDG_SESSION_TYPE=wayland
+
+# 光标主题和大小设置
+export XCURSOR_THEME=Adwaita    # 使用的光标主题
+export XCURSOR_SIZE=24          # 光标大小（像素）
+
+# 主修饰键（Super = Windows/Meta 键）
+MOD=Super
+
+# ============================================================================
+# 键盘设置（JIS 配列）
+# ============================================================================
+riverctl keyboard-layout jp      # 设置日语键盘布局
+riverctl keyboard-model jp106    # 指定 106/109 键盘型号
+riverctl keyboard-options ctrl:nocaps  # 将 Caps Lock 作为 Ctrl 键使用
+
+# ============================================================================
+# 窗口外观设置
+# ============================================================================
+riverctl border-width 2                    # 窗口边框宽度（像素）
+riverctl border-color-focused 0x88c0d0     # 焦点窗口的边框颜色（青色）
+riverctl border-color-unfocused 0x3b4252   # 非焦点窗口的边框颜色（灰色）
+
+# ============================================================================
+# 快捷键绑定设置
+# ============================================================================
+
+# ----- 基本操作 -----
+# Super + Enter: 启动终端（foot）
+riverctl map normal $MOD Return spawn foot
+
+# Super + Shift + Q: 退出 River
+riverctl map normal $MOD Shift Q exit
+
+# Super + Q: 关闭活动窗口
+riverctl map normal $MOD Q close
+
+# ----- 窗口焦点移动（vim 风格） -----
+# Super + H: 焦点移至左侧窗口
+riverctl map normal $MOD H focus-view left
+# Super + J: 焦点移至下方窗口
+riverctl map normal $MOD J focus-view down
+# Super + K: 焦点移至上方窗口
+riverctl map normal $MOD K focus-view up
+# Super + L: 焦点移至右侧窗口
+riverctl map normal $MOD L focus-view right
+
+# ----- 窗口移动（vim 风格） -----
+# Super + Shift + H: 将窗口向左移动
+riverctl map normal $MOD Shift H move-view left
+# Super + Shift + J: 将窗口向下移动
+riverctl map normal $MOD Shift J move-view down
+# Super + Shift + K: 将窗口向上移动
+riverctl map normal $MOD Shift K move-view up
+# Super + Shift + L: 将窗口向右移动
+riverctl map normal $MOD Shift L move-view right
+
+# ----- 浮动模式 -----
+# Super + Space: 切换活动窗口的浮动/平铺模式
+riverctl map normal $MOD Space toggle-float
+
+# ============================================================================
+# 工作区（标签）设置
+# ============================================================================
+# 设置工作区 1-9
+# 每个工作区使用位掩码方式管理
+#
+# Super + 1-9: 切换到指定工作区
+# Super + Shift + 1-9: 将活动窗口移动到指定工作区
+for i in 1 2 3 4 5 6 7 8 9; do
+  riverctl map normal $MOD $i set-focused-tags $((1 << ($i - 1)))
+  riverctl map normal $MOD Shift $i set-view-tags $((1 << ($i - 1)))
+done
+
+# ============================================================================
+# 布局生成器启动
+# ============================================================================
+# rivertile: 平铺布局引擎
+# -view-padding: 窗口之间的内边距（像素）
+# -outer-padding: 屏幕边缘的内边距（像素）
+rivertile -view-padding 6 -outer-padding 6 &
+
+# 将 rivertile 设置为默认布局
+riverctl default-layout rivertile
+
+# ============================================================================
+# 背景设置
+# ============================================================================
+# swaybg: Wayland 背景设置工具
+# -c: 指定背景颜色（#222222 = 深灰色）
+swaybg -c "#222222" &
+
+# ============================================================================
+# 显示器设置（虚拟机用）
+# ============================================================================
+# wlr-randr: Wayland 显示器设置工具
+# 用于 UTM 等虚拟机环境
+# --output: 输出设备名称
+wlr-randr --output Virtual-1  &
+
+# ============================================================================
+# Waybar 启动
+# ============================================================================
+# Waybar: Wayland 状态栏
+# 显示系统信息、日期时间、音量等
+waybar &

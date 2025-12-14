@@ -1,0 +1,22 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 22,
+
+  "modules-left": ["river/tags"],
+  "modules-center": ["river/window"],
+  "modules-right": ["clock"],
+
+  "river/tags": {
+    "num-tags": 9,
+    "disable-scroll": true
+  },
+
+  "river/window": {
+    "max-length": 50
+  },
+
+  "clock": {
+    "format": "{:%H:%M}"
+  }
+}
