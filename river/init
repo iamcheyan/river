@@ -1,14 +1,13 @@
 #!/bin/sh
 
-# This is the example configuration file for river.
+# 这是 river 窗口管理器的配置文件
 #
-# If you wish to edit this, you will probably want to copy it to
-# $XDG_CONFIG_HOME/river/init or $HOME/.config/river/init first.
+# 如需编辑此文件，建议先将其复制到
+# $XDG_CONFIG_HOME/river/init 或 $HOME/.config/river/init
 #
-# See the river(1), riverctl(1), and rivertile(1) man pages for complete
-# documentation.
+# 完整文档请参阅 river(1)、riverctl(1) 和 rivertile(1) 手册页
 
-# Note: the "Super" modifier is also known as Logo, GUI, Windows, Mod4, etc.
+# 注意："Super" 修饰键也称为 Logo、GUI、Windows、Mod4 等
 
 # ============================================================================
 # 环境变量设置
@@ -40,171 +39,170 @@ riverctl keyboard-options ctrl:nocaps  # 将 Caps Lock 作为 Ctrl 键使用
 # Super + Enter: 启动终端（foot）
 riverctl map normal $MOD Return spawn foot
 
-# run prompt
+# 运行启动器（rofi）
 riverctl map normal $MOD Shift Return spawn "rofi -show drun"
 
-# file manager
+# 文件管理器
 riverctl map normal $MOD e spawn "pcmanfm"
 
-# Browser
+# 浏览器
 riverctl map normal $MOD b spawn "qutebrowser"
 
-# logout menu
+# 注销菜单
 riverctl map normal $MOD x spawn "/home/tetsuya/.config/bin/power"
 
-# change wallpaper
+# 更换壁纸
 riverctl map normal $MOD w spawn "/home/tetsuya/.config/bin/wall.sh"
 
-# screenshot using grim
+# 使用 grim 截图
 riverctl map normal $MOD s spawn "grim"
 
-# Super+Q to close the focused view
+# Super+Q 关闭当前焦点窗口
 riverctl map normal $MOD Q close
 
-# Super+Shift+E to exit river
+# Super+Shift+Q 退出 river
 riverctl map normal $MOD Shift Q exit
 
-# Super+J and Super+K to focus the next/previous view in the layout stack
+# Super+J 和 Super+K 在布局堆栈中聚焦下一个/上一个窗口
 riverctl map normal $MOD J focus-view next
 riverctl map normal $MOD K focus-view previous
 
-# Super+Shift+J and Super+Shift+K to swap the focused view with the next/previous
-# view in the layout stack
+# Super+Shift+J 和 Super+Shift+K 在布局堆栈中交换当前焦点窗口与下一个/上一个窗口
 riverctl map normal $MOD Shift J swap next
 riverctl map normal $MOD Shift K swap previous
 
-# Super+Period and Super+Comma to focus the next/previous output
+# Super+Period 和 Super+Comma 聚焦下一个/上一个输出
 riverctl map normal $MOD Period focus-output next
 riverctl map normal $MOD Comma focus-output previous
 
-# Super+Shift+{Period,Comma} to send the focused view to the next/previous output
+# Super+Shift+{Period,Comma} 将当前焦点窗口发送到下一个/上一个输出
 riverctl map normal $MOD Shift Period send-to-output next
 riverctl map normal $MOD Shift Comma send-to-output previous
 
-# Super+Return to bump the focused view to the top of the layout stack
+# Super+Return 将当前焦点窗口提升到布局堆栈顶部
 #riverctl map normal $MOD Return zoom
 
-# Super+H and Super+L to decrease/increase the main ratio of rivertile(1)
+# Super+H 和 Super+L 减少/增加 rivertile(1) 的主窗口比例
 riverctl map normal $MOD H send-layout-cmd rivertile "main-ratio -0.05"
 riverctl map normal $MOD L send-layout-cmd rivertile "main-ratio +0.05"
 
-# Super+Shift+H and Super+Shift+L to increment/decrement the main count of rivertile(1)
+# Super+Shift+H 和 Super+Shift+L 增加/减少 rivertile(1) 的主窗口数量
 riverctl map normal $MOD Shift H send-layout-cmd rivertile "main-count +1"
 riverctl map normal $MOD Shift L send-layout-cmd rivertile "main-count -1"
 
-# Super+Alt+{H,J,K,L} to move views
+# Super+Alt+{H,J,K,L} 移动窗口
 riverctl map normal $MOD Alt H move left 100
 riverctl map normal $MOD Alt J move down 100
 riverctl map normal $MOD Alt K move up 100
 riverctl map normal $MOD Alt L move right 100
 
-# Super+Alt+Control+{H,J,K,L} to snap views to screen edges
+# Super+Alt+Control+{H,J,K,L} 将窗口吸附到屏幕边缘
 riverctl map normal $MOD Alt Control H snap left
 riverctl map normal $MOD Alt Control J snap down
 riverctl map normal $MOD Alt Control K snap up
 riverctl map normal $MOD Alt Control L snap right
 
-# Super+Alt+Shift+{H,J,K,L} to resize views
+# Super+Alt+Shift+{H,J,K,L} 调整窗口大小
 riverctl map normal $MOD Alt Shift H resize horizontal -100
 riverctl map normal $MOD Alt Shift J resize vertical 100
 riverctl map normal $MOD Alt Shift K resize vertical -100
 riverctl map normal $MOD Alt Shift L resize horizontal 100
 
-# Super + Left Mouse Button to move views
+# Super + 鼠标左键 移动窗口
 riverctl map-pointer normal $MOD BTN_LEFT move-view
 
-# Super + Right Mouse Button to resize views
+# Super + 鼠标右键 调整窗口大小
 riverctl map-pointer normal $MOD BTN_RIGHT resize-view
 
-# Super + Middle Mouse Button to toggle float
+# Super + 鼠标中键 切换浮动模式
 riverctl map-pointer normal $MOD BTN_MIDDLE toggle-float
 
 for i in $(seq 1 9)
 do
     tags=$((1 << ($i - 1)))
 
-    # Super+[1-9] to focus tag [0-8]
-    riverctl map normal Super $i set-focused-tags $tags
+    # Super+[1-9] 聚焦标签 [0-8]
+    riverctl map normal $MOD $i set-focused-tags $tags
 
-    # Super+Shift+[1-9] to tag focused view with tag [0-8]
-    riverctl map normal Super+Shift $i set-view-tags $tags
+    # Super+Shift+[1-9] 将当前焦点窗口标记为标签 [0-8]
+    riverctl map normal $MOD Shift $i set-view-tags $tags
 
-    # Super+Control+[1-9] to toggle focus of tag [0-8]
-    riverctl map normal Super+Control $i toggle-focused-tags $tags
+    # Super+Control+[1-9] 切换标签 [0-8] 的聚焦状态
+    riverctl map normal $MOD Control $i toggle-focused-tags $tags
 
-    # Super+Shift+Control+[1-9] to toggle tag [0-8] of focused view
-    riverctl map normal Super+Shift+Control $i toggle-view-tags $tags
+    # Super+Shift+Control+[1-9] 切换当前焦点窗口的标签 [0-8]
+    riverctl map normal $MOD Shift Control $i toggle-view-tags $tags
 done
 
-# Super+0 to focus all tags
-# Super+Shift+0 to tag focused view with all tags
+# Super+0 聚焦所有标签
+# Super+Shift+0 将当前焦点窗口标记为所有标签
 all_tags=$(((1 << 32) - 1))
-riverctl map normal Super 0 set-focused-tags $all_tags
-riverctl map normal Super+Shift 0 set-view-tags $all_tags
+riverctl map normal $MOD 0 set-focused-tags $all_tags
+riverctl map normal $MOD Shift 0 set-view-tags $all_tags
 
-# Super+Space to toggle float
-riverctl map normal Super Space toggle-float
+# Super+Space 切换浮动模式
+riverctl map normal $MOD Space toggle-float
 
-# Super+F to toggle fullscreen
-riverctl map normal Super F toggle-fullscreen
+# Super+F 切换全屏模式
+riverctl map normal $MOD F toggle-fullscreen
 
-# Super+{Up,Right,Down,Left} to change layout orientation
-riverctl map normal Super Up    send-layout-cmd rivertile "main-location top"
-riverctl map normal Super Right send-layout-cmd rivertile "main-location right"
-riverctl map normal Super Down  send-layout-cmd rivertile "main-location bottom"
-riverctl map normal Super Left  send-layout-cmd rivertile "main-location left"
+# Super+{Up,Right,Down,Left} 更改布局方向
+riverctl map normal $MOD Up    send-layout-cmd rivertile "main-location top"
+riverctl map normal $MOD Right send-layout-cmd rivertile "main-location right"
+riverctl map normal $MOD Down  send-layout-cmd rivertile "main-location bottom"
+riverctl map normal $MOD Left  send-layout-cmd rivertile "main-location left"
 
-# Declare a passthrough mode. This mode has only a single mapping to return to
-# normal mode. This makes it useful for testing a nested wayland compositor
+# 声明一个直通模式。此模式只有一个映射用于返回到
+# 正常模式。这对于测试嵌套的 wayland 合成器很有用
 riverctl declare-mode passthrough
 
-# Super+F11 to enter passthrough mode
-riverctl map normal Super F11 enter-mode passthrough
+# Super+F11 进入直通模式
+riverctl map normal $MOD F11 enter-mode passthrough
 
-# Super+F11 to return to normal mode
-riverctl map passthrough Super F11 enter-mode normal
+# Super+F11 返回到正常模式
+riverctl map passthrough $MOD F11 enter-mode normal
 
-# Various media key mapping examples for both normal and locked mode which do
-# not have a modifier
+# 各种媒体键映射示例，适用于正常模式和锁定模式
+# 这些键不需要修饰键
 for mode in normal locked
 do
-    # Eject the optical drive (well if you still have one that is)
+    # 弹出光驱（如果你还有的话）
     riverctl map $mode None XF86Eject spawn 'eject -T'
 
-    # Control pulse audio volume with pamixer (https://github.com/cdemoulins/pamixer)
+    # 使用 pamixer 控制 Pulse 音频音量 (https://github.com/cdemoulins/pamixer)
     riverctl map $mode None XF86AudioRaiseVolume  spawn 'pamixer -i 5'
     riverctl map $mode None XF86AudioLowerVolume  spawn 'pamixer -d 5'
     riverctl map $mode None XF86AudioMute         spawn 'pamixer --toggle-mute'
 
-    # Control MPRIS aware media players with playerctl (https://github.com/altdesktop/playerctl)
+    # 使用 playerctl 控制支持 MPRIS 的媒体播放器 (https://github.com/altdesktop/playerctl)
     riverctl map $mode None XF86AudioMedia spawn 'playerctl play-pause'
     riverctl map $mode None XF86AudioPlay  spawn 'playerctl play-pause'
     riverctl map $mode None XF86AudioPrev  spawn 'playerctl previous'
     riverctl map $mode None XF86AudioNext  spawn 'playerctl next'
 
-    # Control screen backlight brightness with light (https://github.com/haikarainen/light)
+    # 使用 light 控制屏幕背光亮度 (https://github.com/haikarainen/light)
     riverctl map $mode None XF86MonBrightnessUp   spawn 'light -A 5'
     riverctl map $mode None XF86MonBrightnessDown spawn 'light -U 5'
 done
 
-# Set background and border color
+# 设置背景和边框颜色
 riverctl background-color 0x002b36
 riverctl border-color-focused 0x93a1a1
 riverctl border-color-unfocused 0x586e75
 
-# Set keyboard repeat rate
+# 设置键盘重复速率
 riverctl set-repeat 50 300
 
-# Make all views with an app-id that starts with "float" and title "foo" start floating.
+# 使所有 app-id 以 "float" 开头且标题为 "foo" 的窗口自动浮动
 riverctl rule-add -app-id 'float*' -title 'foo' float
 
-# Make all views with app-id "bar" and any title use client-side decorations
+# 使所有 app-id 为 "bar" 且任意标题的窗口使用客户端装饰
 riverctl rule-add -app-id "bar" csd
 
-# Set the default layout generator to be rivertile and start it.
-# River will send the process group of the init executable SIGTERM on exit.
+# 设置默认布局生成器为 rivertile 并启动它
+# River 将在退出时向 init 可执行文件的进程组发送 SIGTERM
 riverctl default-layout rivertile
 rivertile -view-padding 4 -outer-padding 4 &
-# Autostart
+# 自动启动
 /home/tetsuya/.config/river/autostart.sh
 
